@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,9 +28,9 @@
     .music-player {
       width: 350px;
       background: white;
-      padding: 20px;
+      padding: 20px 20px 30px 20px;
       border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       text-align: center;
     }
 
@@ -38,7 +39,6 @@
       height: 170px;
       margin: 0 auto 15px;
       padding: 10px;
-      overflow: hidden;
     }
 
     .logo-gif {
@@ -46,10 +46,10 @@
       height: 150px;
       border-radius: 20px;
       object-fit: cover;
-      box-shadow: 
+      box-shadow:
         0 0 0 3px #ffffff,
         0 0 0 5px #9b59b6,
-        0 4px 20px rgba(0,0,0,0.2);
+        0 4px 20px rgba(0, 0, 0, 0.2);
       margin-bottom: 15px;
       transition: transform 0.3s ease;
     }
@@ -81,11 +81,12 @@
 
     .progress-container {
       background: #ddd;
-      width: 100%;
+      width: calc(100% - 40px);
+      margin: 0 auto 10px auto;
       height: 6px;
       cursor: pointer;
       border-radius: 3px;
-      margin-bottom: 10px;
+      position: relative; /* Adicionado para posicionar o thumb */
     }
 
     #progress {
@@ -93,6 +94,25 @@
       width: 0;
       height: 100%;
       border-radius: 3px;
+    }
+
+    /* Estilo para o cabeçote (thumb) */
+    #progress-thumb {
+      width: 16px;
+      height: 16px;
+      background: #ff5500; /* Cor do thumb */
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 0; /* Posição inicial */
+      transform: translate(-50%, -50%); /* Centraliza o thumb */
+      cursor: grab; /* Cursor para indicar que pode ser arrastado */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: transform 0.1s ease; /* Transição suave para o hover */
+    }
+
+    #progress-thumb:active {
+        cursor: grabbing; /* Cursor quando está sendo arrastado */
     }
 
     .track-info {
@@ -109,9 +129,9 @@
       width: 180px;
       max-height: 400px;
       overflow-y: scroll;
-      background: rgba(255,255,255,0.8);
+      background: rgba(255, 255, 255, 0.8);
       border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       padding: 10px;
     }
 
@@ -119,6 +139,7 @@
       width: 0;
       height: 0;
     }
+
     .playlist {
       -ms-overflow-style: none;
       scrollbar-width: none;
@@ -137,7 +158,7 @@
 
     .track-item:hover {
       transform: scale(1.05);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       background: #fff;
     }
 
@@ -154,8 +175,70 @@
       text-align: center;
       color: #333;
     }
+
+    .volume-control {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+      gap: 10px;
+    }
+
+    .volume-control i {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    .volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 150px;
+      height: 4px;
+      border-radius: 2px;
+      background: #ddd;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ff5500;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease;
+    }
+
+    .volume-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .volume-slider::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ff5500;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease;
+    }
+
+    .volume-slider::-moz-range-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .volume-slider::-moz-range-track {
+      background: #ddd;
+      height: 4px;
+      border-radius: 2px;
+    }
   </style>
 </head>
+
 <body>
 
   <div class="container">
@@ -164,13 +247,8 @@
         <img class="logo-gif" id="album-art" src="https://c.tenor.com/ihCgYANplFYAAAAd/tenor.gif" alt="MiausicBox">
       </div>
 
-      <iframe 
-        id="sc-player"
-        width="100%" height="166"
-        scrolling="no"
-        frameborder="no"
-        allow="autoplay"
-        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1264506369&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=false">
+      <iframe id="sc-player" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay"
+        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/293&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&visual=false">
       </iframe>
 
       <div class="controls">
@@ -181,10 +259,16 @@
 
       <div class="progress-container" id="progress-container">
         <div id="progress"></div>
+        <div id="progress-thumb"></div> <!-- O NOVO CABEÇOTE -->
       </div>
 
       <div class="track-info">
         <span id="title">Nenhum miau tocando...</span>
+        <div class="volume-control">
+          <i class="fas fa-volume-down"></i>
+          <input type="range" id="volume-slider" min="0" max="100" value="100" class="volume-slider">
+          <i class="fas fa-volume-up"></i>
+        </div>
       </div>
     </div>
 
@@ -197,31 +281,89 @@
     const nextBtn = document.getElementById('next');
     const progressContainer = document.getElementById('progress-container');
     const progress = document.getElementById('progress');
+    const progressThumb = document.getElementById('progress-thumb'); // NOVO: Referência ao cabeçote
     const title = document.getElementById('title');
     const albumArt = document.getElementById('album-art');
     const playlistContainer = document.getElementById('playlist');
 
+    const volumeSlider = document.getElementById('volume-slider');
+    let currentVolume = 100;
+
     const tracks = [
       {
-        title: "Lo-fi Chillhop Cat - Sleepy Days",
-        url: "https://api.soundcloud.com/tracks/1264506369",
-        cover: "https://i1.sndcdn.com/artworks-FmUqLjvZ4ZJX-0-t500x500.jpg"
+        title: "Exemplo Oficial - SoundCloud",
+        url: "https://api.soundcloud.com/tracks/293",
+        cover: "https://i1.sndcdn.com/artworks-000000000000-0-t500x500.jpg"
       },
       {
-        title: "Chillhop Dreams - Nymano",
-        url: "https://api.soundcloud.com/tracks/1290474873",
-        cover: "https://i1.sndcdn.com/artworks-g9bF3zBvnUAE-0-t500x500.jpg"
+        title: "YaSuKe 弥助 !!! (Prod. Sim)",
+        url: "https://api.soundcloud.com/tracks/1123049251",
+        cover: "https://i1.sndcdn.com/artworks-WQGncTCPSeYOVdtC-Ucf2zg-t500x500.jpg"
       },
       {
-        title: "Lo-fi Beats - Philanthrope",
-        url: "https://api.soundcloud.com/tracks/1274013470",
-        cover: "https://i1.sndcdn.com/artworks-rmshME9pZAt6-0-t500x500.jpg"
-      }
+        title: "DJ GATOR AIDS @ SWAMP FEST 23",
+        url: "https://api.soundcloud.com/tracks/1967183415",
+        cover: "https://i1.sndcdn.com/artworks-WcVRnt3QHm0mzgp3-8O03yw-t500x500.jpg"
+      },
+      {
+        title: "Metallica No Fone!! *.°+^^ (p. frozy x warheart)",
+        url: "https://api.soundcloud.com/tracks/1215090046",
+        cover: "https://i1.sndcdn.com/artworks-UrzdJFhLRadm4d1s-62Lm2g-t500x500.jpg"
+      },
+      {
+        title: "Vai na Piroca Amor – MUST MIV",
+        url: "https://api.soundcloud.com/tracks/679115748",
+        cover: "https://i1.sndcdn.com/artworks-000595775634-ggf7kl-t500x500.jpg"
+      },
+      {
+        title: "Cogumelo - tocanna",
+        url: "https://api.soundcloud.com/tracks/2091422595",
+        cover: "https://i1.sndcdn.com/artworks-OFnLqaC71Q2k-0-t500x500.png"
+      },
+      {
+        title: "Lo-fi Relax Beats - Bonus",
+        url: "https://api.soundcloud.com/tracks/884578132",
+        cover: "https://i1.sndcdn.com/artworks-LOFIEXEMPLO-t500x500.jpg"
+      },
+      {
+        title: "Lo-fi Relax Beats - Bonus",
+        url: "https://api.soundcloud.com/tracks/884578132",
+        cover: "https://i1.sndcdn.com/artworks-LOFIEXEMPLO-t500x500.jpg"
+      },
+      {
+        title: "Lo-fi Relax Beats - Bonus",
+        url: "https://api.soundcloud.com/tracks/884578132",
+        cover: "https://i1.sndcdn.com/artworks-LOFIEXEMPLO-t500x500.jpg"
+      },
+      {
+        title: "Lo-fi Relax Beats - Bonus",
+        url: "https://api.soundcloud.com/tracks/884578132",
+        cover: "https://i1.sndcdn.com/artworks-LOFIEXEMPLO-t500x500.jpg"
+      },
+      {
+        title: "Lo-fi Relax Beats - Bonus",
+        url: "https://api.soundcloud.com/tracks/884578132",
+        cover: "https://i1.sndcdn.com/artworks-LOFIEXEMPLO-t500x500.jpg"
+      },
+      {
+        title: "Lo-fi Relax Beats - Bonus",
+        url: "https://api.soundcloud.com/tracks/884578132",
+        cover: "https://i1.sndcdn.com/artworks-LOFIEXEMPLO-t500x500.jpg"
+      },
+      {
+        title: "Lo-fi Relax Beats - Bonus",
+        url: "https://api.soundcloud.com/tracks/884578132",
+        cover: "https://i1.sndcdn.com/artworks-LOFIEXEMPLO-t500x500.jpg"
+      },
     ];
+
 
     let trackIndex = 0;
     let isPlaying = false;
     const widget = SC.Widget(document.getElementById('sc-player'));
+
+    // Variáveis para arrastar o thumb
+    let isDraggingThumb = false;
 
     function loadTrack(index, autoplay = false) {
       widget.load(tracks[index].url, {
@@ -229,9 +371,13 @@
         show_artwork: false
       });
       title.textContent = tracks[index].title;
+      albumArt.src = "https://c.tenor.com/ihCgYANplFYAAAAd/tenor.gif"; // GATO FIXO
       albumArt.classList.remove("playing");
       progress.style.width = "0%";
+      progressThumb.style.left = "0%"; // Reseta a posição do thumb
       playBtn.querySelector('i').classList.replace('fa-pause', 'fa-play');
+      volumeSlider.value = currentVolume;
+      widget.setVolume(currentVolume);
     }
 
     playBtn.addEventListener('click', () => {
@@ -261,16 +407,99 @@
     });
 
     widget.bind(SC.Widget.Events.PLAY_PROGRESS, (e) => {
-      const percent = (e.currentPosition / e.duration) * 100;
-      progress.style.width = `${percent}%`;
+      // Só atualiza se o thumb não estiver sendo arrastado
+      if (!isDraggingThumb) {
+        const percent = (e.currentPosition / e.duration) * 100;
+        progress.style.width = `${percent}%`;
+        progressThumb.style.left = `${percent}%`; // Atualiza a posição do thumb
+      }
     });
 
-    progressContainer.addEventListener('click', (e) => {
+    // Função para calcular e buscar a posição na música
+    function seekToPosition(e) {
       const width = progressContainer.clientWidth;
-      const clickX = e.offsetX;
+      // Calcula a posição do clique/arrasto em relação ao contêiner
+      let clickX = e.offsetX;
+      if (e.type === 'mousemove' || e.type === 'touchmove') {
+          // Para eventos de arrasto, use clientX e ajuste pelo offsetLeft do container
+          clickX = e.clientX - progressContainer.getBoundingClientRect().left;
+      }
+
+      // Garante que o clickX esteja dentro dos limites (0 a width)
+      clickX = Math.max(0, Math.min(clickX, width));
+
+      const percent = (clickX / width) * 100;
+
+      // Atualiza a barra de progresso e o thumb imediatamente para feedback visual
+      progress.style.width = `${percent}%`;
+      progressThumb.style.left = `${percent}%`;
+
       widget.getDuration((duration) => {
         widget.seekTo((clickX / width) * duration);
       });
+    }
+
+    // Evento de clique na barra de progresso (para pular)
+    progressContainer.addEventListener('click', (e) => {
+        // Se o clique foi no thumb, não faça nada (o arrasto vai lidar com isso)
+        if (e.target === progressThumb) return;
+        seekToPosition(e);
+    });
+
+    // Eventos para arrastar o thumb
+    progressThumb.addEventListener('mousedown', (e) => {
+        isDraggingThumb = true;
+        // Previne que o navegador arraste a imagem do thumb
+        e.preventDefault();
+    });
+
+    // Adiciona listeners ao document para que o arrasto funcione mesmo fora do thumb
+    document.addEventListener('mousemove', (e) => {
+        if (isDraggingThumb) {
+            seekToPosition(e);
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isDraggingThumb) {
+            isDraggingThumb = false;
+            // Opcional: Força uma atualização final da posição da música
+            // (seekToPosition já é chamado no mousemove, mas garante)
+        }
+    });
+
+    // Eventos Touch para dispositivos móveis
+    progressThumb.addEventListener('touchstart', (e) => {
+        isDraggingThumb = true;
+        e.preventDefault(); // Previne o scroll da página
+    });
+
+    document.addEventListener('touchmove', (e) => {
+        if (isDraggingThumb && e.touches.length > 0) {
+            // Use clientX do primeiro toque
+            const touchX = e.touches[0].clientX;
+            const width = progressContainer.clientWidth;
+            const containerLeft = progressContainer.getBoundingClientRect().left;
+            const clickX = touchX - containerLeft;
+
+            const percent = (clickX / width) * 100;
+            progress.style.width = `${percent}%`;
+            progressThumb.style.left = `${percent}%`;
+
+            widget.getDuration((duration) => {
+                widget.seekTo((clickX / width) * duration);
+            });
+        }
+    });
+
+    document.addEventListener('touchend', () => {
+        isDraggingThumb = false;
+    });
+
+
+    volumeSlider.addEventListener('input', (e) => {
+      currentVolume = e.target.value;
+      widget.setVolume(currentVolume);
     });
 
     function buildPlaylist() {
@@ -293,4 +522,5 @@
     buildPlaylist();
   </script>
 </body>
+
 </html>
